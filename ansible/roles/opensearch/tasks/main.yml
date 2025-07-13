@@ -1,0 +1,74 @@
+---
+# tasks file for opensearch role
+- name: Create OpenSearch directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  with_items:
+    - "/etc/opensearch"
+    - "/var/lib/opensearch"
+    - "/var/log/opensearch"
+
+- name: Set OpenSearch directories permissions
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: opensearch
+    group: opensearch
+    mode: '0755'
+    recurse: yes
+  with_items:
+    - "/etc/opensearch"
+    - "/var/lib/opensearch"
+    - "/var/log/opensearch"
+  when: opensearch_user_created.changed
+
+- name: Download and install OpenSearch
+  get_url:
+    url: "{{ opensearch_download_url }}"
+    dest: "/tmp/opensearch.tar.gz"
+  register: opensearch_download
+
+- name: Extract OpenSearch
+  unarchive:
+    src: "/tmp/opensearch.tar.gz"
+    dest: "{{ opensearch_install_dir }}"
+    remote_src: yes
+    creates: "{{ opensearch_install_dir }}/opensearch-{{ opensearch_version }}"
+  when: opensearch_download.changed
+
+- name: Configure OpenSearch
+  template:
+    src: opensearch.yml.j2
+    dest: "/etc/opensearch/opensearch.yml"
+    owner: opensearch
+    group: opensearch
+    mode: '0644'
+  notify: restart opensearch
+
+- name: Configure JVM options
+  template:
+    src: jvm.options.j2
+    dest: "/etc/opensearch/jvm.options"
+    owner: opensearch
+    group: opensearch
+    mode: '0644'
+  notify: restart opensearch
+
+- name: Create OpenSearch systemd service
+  template:
+    src: opensearch.service.j2
+    dest: "/etc/systemd/system/opensearch.service"
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    - systemd daemon reload
+    - restart opensearch
+
+- name: Enable and start OpenSearch service
+  systemd:
+    name: opensearch
+    enabled: yes
+    state: started

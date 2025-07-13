@@ -1,0 +1,4 @@
+---
+# vars file for grafana role
+# These vars override defaults and are not typically meant to be modified
+grafana_version: "latest"

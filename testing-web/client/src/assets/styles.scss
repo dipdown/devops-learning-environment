@@ -1,0 +1,117 @@
+/* Base styles for the app */
+
+$breakpoints: (
+    'sm': 576px,
+    'md': 768px,
+    'lg': 992px,
+    'xl': 1200px
+);
+
+@mixin media-breakpoint-up($breakpoint) {
+    @if map-has-key($breakpoints, $breakpoint) {
+        @media (min-width: map-get($breakpoints, $breakpoint)) {
+            @content;
+        }
+    }
+    @else {
+        @warn "Unknown breakpoint `#{$breakpoint}`. Available: #{map-keys($breakpoints)}";
+    }
+}
+
+// Layout
+.layout-main-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    justify-content: space-between;
+    padding: 7rem 2rem 2rem 4rem;
+    transition: margin-left .3s;
+}
+
+.layout-main {
+    flex: 1 1 auto;
+}
+
+// Auth pages
+.auth-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f7fafc;
+
+    .auth-card {
+        width: 100%;
+        max-width: 450px;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+    }
+
+    .auth-logo {
+        display: block;
+        margin: 0 auto 2rem;
+        max-width: 150px;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .auth-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 2rem;
+    }
+}
+
+// CRUD pages
+.crud-container {
+    .crud-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+
+        @include media-breakpoint-up('md') {
+            flex-direction: row;
+        }
+
+        @media screen and (max-width: 576px) {
+            flex-direction: column;
+            align-items: flex-start;
+
+            .crud-actions {
+                margin-top: 1rem;
+                width: 100%;
+
+                .p-button {
+                    width: 100%;
+                }
+            }
+        }
+    }
+
+    .crud-table {
+        margin-bottom: 2rem;
+    }
+
+    .crud-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+}
+
+// Responsive adjustments
+@media screen and (max-width: 992px) {
+    .layout-main-container {
+        padding-left: 2rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .layout-main-container {
+        padding: 6rem 1rem 1rem 1rem;
+    }
+}

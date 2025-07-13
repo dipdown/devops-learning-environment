@@ -1,0 +1,34 @@
+---
+- name: Deploy Web Application
+  hosts: webservers
+  become: true
+  roles:
+    - vue-app
+
+- name: Deploy Monitoring Tools
+  hosts: monitoring
+  become: true
+  roles:
+    - grafana
+    - opensearch
+
+- name: Setup Local Environment
+  hosts: local
+  become: true
+  tasks:
+    - name: Ensure docker is installed
+      package:
+        name: docker
+        state: present
+      when: ansible_os_family == "Debian" or ansible_os_family == "RedHat"
+
+    - name: Ensure docker-compose is installed
+      pip:
+        name: docker-compose
+        state: present
+
+    - name: Start Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes

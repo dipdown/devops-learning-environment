@@ -1,0 +1,59 @@
+---
+# tasks file for grafana role
+- name: Ensure Grafana repository is installed
+  apt_repository:
+    repo: "deb https://packages.grafana.com/oss/deb stable main"
+    state: present
+    update_cache: yes
+  when: ansible_os_family == "Debian"
+
+- name: Add Grafana GPG key
+  apt_key:
+    url: https://packages.grafana.com/gpg.key
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: Install Grafana
+  package:
+    name: grafana
+    state: present
+
+- name: Enable and start Grafana service
+  systemd:
+    name: grafana-server
+    enabled: yes
+    state: started
+
+- name: Create Grafana API key
+  uri:
+    url: "http://localhost:3000/api/auth/keys"
+    method: POST
+    user: "{{ grafana_admin_user }}"
+    password: "{{ grafana_admin_password }}"
+    force_basic_auth: yes
+    body_format: json
+    body:
+      name: "ansible-provisioning"
+      role: "Admin"
+    status_code: 200
+    headers:
+      Content-Type: "application/json"
+  register: api_key
+  no_log: true
+
+- name: Configure datasources
+  uri:
+    url: "http://localhost:3000/api/datasources"
+    method: POST
+    headers:
+      Authorization: "Bearer {{ api_key.json.key }}"
+      Content-Type: "application/json"
+    body_format: json
+    body:
+      name: "Prometheus"
+      type: "prometheus"
+      url: "http://prometheus:9090"
+      access: "proxy"
+      isDefault: true
+    status_code: 200
+  when: api_key is defined and api_key.json is defined and api_key.json.key is defined

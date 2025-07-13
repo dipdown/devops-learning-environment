@@ -1,0 +1,66 @@
+---
+# tasks file for vue-app role
+- name: Install required packages
+  package:
+    name:
+      - nodejs
+      - npm
+      - git
+    state: present
+
+- name: Create app directory
+  file:
+    path: "{{ vue_app_path }}"
+    state: directory
+    owner: "{{ vue_app_user }}"
+    group: "{{ vue_app_group }}"
+    mode: "0755"
+
+- name: Clone Vue application repository
+  git:
+    repo: "{{ vue_app_repo }}"
+    dest: "{{ vue_app_path }}"
+    version: "{{ vue_app_branch }}"
+  become: yes
+  become_user: "{{ vue_app_user }}"
+  when: vue_app_repo is defined
+
+- name: Install dependencies
+  npm:
+    path: "{{ vue_app_path }}"
+    ci: yes
+  become: yes
+  become_user: "{{ vue_app_user }}"
+
+- name: Build Vue application
+  command:
+    cmd: "{{ vue_app_build_command }}"
+    chdir: "{{ vue_app_path }}"
+  become: yes
+  become_user: "{{ vue_app_user }}"
+  when: vue_app_build_command is defined
+
+- name: Configure Nginx for Vue app
+  template:
+    src: nginx.conf.j2
+    dest: "/etc/nginx/sites-available/{{ vue_app_name }}.conf"
+    owner: root
+    group: root
+    mode: "0644"
+  when: vue_app_use_nginx
+  notify: reload nginx
+
+- name: Enable Vue app site in Nginx
+  file:
+    src: "/etc/nginx/sites-available/{{ vue_app_name }}.conf"
+    dest: "/etc/nginx/sites-enabled/{{ vue_app_name }}.conf"
+    state: link
+  when: vue_app_use_nginx
+  notify: reload nginx
+
+- name: Ensure Nginx is running
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+  when: vue_app_use_nginx

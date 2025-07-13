@@ -1,0 +1,19 @@
+---
+# defaults file for opensearch role
+opensearch_version: "2.5.0"
+opensearch_download_url: "https://artifacts.opensearch.org/releases/bundle/opensearch/{{ opensearch_version }}/opensearch-{{ opensearch_version }}-linux-x64.tar.gz"
+opensearch_install_dir: "/opt"
+
+# System settings
+opensearch_user: opensearch
+opensearch_group: opensearch
+
+# OpenSearch settings
+opensearch_cluster_name: "devops-cluster"
+opensearch_http_port: 9200
+opensearch_transport_port: 9300
+opensearch_memory: "1g"
+opensearch_discovery_type: "single-node"
+
+# Security settings
+opensearch_security_disabled: true

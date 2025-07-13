@@ -1,0 +1,25 @@
+---
+# Default variables for vue-app role
+
+# Application details
+vue_app_name: "devops-crud-app"
+vue_app_path: "/var/www/vue-app"
+vue_app_user: "www-data"
+vue_app_group: "www-data"
+
+# Git repository details (optional)
+# vue_app_repo: "https://github.com/your-repo/vue-app.git"
+# vue_app_branch: "main"
+
+# Build configuration
+vue_app_build_command: "npm run build"
+
+# Nginx configuration
+vue_app_use_nginx: true
+vue_app_server_name: "localhost"
+vue_app_port: 80
+
+# Environment variables
+vue_app_env_vars:
+  NODE_ENV: "production"
+  VUE_APP_API_URL: "http://localhost:3001"

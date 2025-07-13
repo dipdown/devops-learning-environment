@@ -1,0 +1,20 @@
+cluster.name: "devops-cluster"
+network.host: 0.0.0.0
+
+# Disable security features for this learning environment
+plugins.security.disabled: true
+
+# Allow REST API access from anywhere
+http.cors.enabled: true
+http.cors.allow-origin: "*"
+http.cors.allow-methods: OPTIONS, HEAD, GET, POST, PUT, DELETE
+
+# Disable certificate verification
+plugins.security.ssl.transport.enforce_hostname_verification: false
+
+# Disable security auditing
+plugins.security.audit.type: none
+
+# Cluster settings
+discovery.type: single-node
+cluster.routing.allocation.disk.threshold_enabled: false

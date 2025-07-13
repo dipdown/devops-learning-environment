@@ -1,0 +1,6 @@
+---
+# vars file for vue-app role
+# These vars override defaults and are not typically meant to be modified
+
+# Node.js version
+node_version: 20.x

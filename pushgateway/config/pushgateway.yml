@@ -1,0 +1,7 @@
+---
+web:
+  listen-address: "0.0.0.0:9091"
+  telemetry-path: "/metrics"
+persistence:
+  file: "/pushgateway/pushgateway.data"
+  interval: 5m

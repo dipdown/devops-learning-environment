@@ -1,0 +1,31 @@
+apiVersion: 1
+
+datasources:
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    url: http://prometheus:9090
+    isDefault: true
+    editable: true
+    
+  - name: OpenSearch
+    type: opensearch
+    access: proxy
+    url: http://opensearch:9200
+    database: logs-*
+    editable: true
+    jsonData:
+      timeField: "@timestamp"
+      esVersion: "7.10.0"
+      logMessageField: message
+      logLevelField: level
+      
+  - name: MySQL
+    type: mysql
+    access: proxy
+    url: host.docker.internal:8889
+    database: mysql
+    user: root
+    editable: true
+    secureJsonData:
+      password: "root"

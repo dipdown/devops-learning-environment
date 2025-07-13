@@ -1,0 +1,10 @@
+---
+# handlers file for opensearch
+- name: systemd daemon reload
+  systemd:
+    daemon_reload: yes
+
+- name: restart opensearch
+  systemd:
+    name: opensearch
+    state: restarted

@@ -1,0 +1,18 @@
+---
+# defaults file for grafana role
+grafana_admin_user: admin
+grafana_admin_password: admin
+
+# Grafana service configuration
+grafana_http_port: 3000
+grafana_plugins:
+  - grafana-clock-panel
+  - grafana-simple-json-datasource
+
+# Datasources
+grafana_datasources:
+  - name: Prometheus
+    type: prometheus
+    url: http://prometheus:9090
+    access: proxy
+    isDefault: true
