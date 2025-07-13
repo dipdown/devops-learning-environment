@@ -347,11 +347,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Vue.js** and **Express.js** communities for the web frameworks
 
 ---
-
-<div align="center">
-
-**⭐ If this project helped you, please consider giving it a star! ⭐**
-
-[Report Bug](https://github.com/yourusername/devops-learning-environment/issues) • [Request Feature](https://github.com/yourusername/devops-learning-environment/issues) • [Documentation](docs/)
-
-</div>
