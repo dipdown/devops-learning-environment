@@ -312,38 +312,4 @@ docker exec devops_mysql mysqladmin -u root -proot ping
 docker compose stop mysql && docker volume rm devops-learning_mysql_data
 ```
 
-## 📈 Performance Optimization
 
-### Resource Requirements
-- **RAM**: Minimum 4GB, Recommended 8GB
-- **CPU**: 2+ cores recommended for optimal performance
-- **Disk**: 10GB free space for containers and data
-
-### Scaling Considerations
-- Each service can be scaled independently using Docker Compose
-- Prometheus retention can be adjusted for long-term monitoring
-- Database connections can be optimized via environment variables
-
-## 🤝 Contributing
-
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
-
-### Development Workflow
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## � License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## � Acknowledgments
-
-- **Grafana Labs** for the excellent monitoring platform
-- **Prometheus** community for the robust metrics system
-- **Docker** for containerization technology
-- **Vue.js** and **Express.js** communities for the web frameworks
-
----
